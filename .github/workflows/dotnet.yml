@@ -1,1 +1,31 @@
-coming soon
+name: Reusable Dotnet Workflow
+on:
+  workflow_call:
+    inputs:
+      project-path:
+        required: true
+        type: string
+      dotnet-version:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Restore dependencies
+        run: dotnet restore ${{ inputs.project-path }}
+      - name: Build
+        run: dotnet build ${{ inputs.project-path }} --no-restore -o ./build-output
+      - name: Security Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'table'
+          output: 'trivy-results.txt'
