@@ -1,0 +1,4 @@
+#!/bin/bash
+docker login $INPUT_REGISTRY -u $INPUT_USERNAME -p $INPUT_PASSWORD
+docker build -t $INPUT_REGISTRY/$INPUT_IMAGE_NAME:$INPUT_TAG -f Dockerfile.react .
+docker push $INPUT_REGISTRY/$INPUT_IMAGE_NAME:$INPUT_TAG
