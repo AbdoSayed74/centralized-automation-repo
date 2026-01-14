@@ -1,0 +1,13 @@
+name: 'React Docker S2I'
+description: 'Build and push React image to GHCR'
+inputs:
+  registry: { required: true }
+  username: { required: true }
+  password: { required: true }
+  image-name: { required: true }
+  tag: { default: 'latest' }
+runs:
+  using: 'docker'
+  image: 'Dockerfile.react'
+  args:
+    - ./entrypoint.sh
